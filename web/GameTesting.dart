@@ -5,6 +5,7 @@ List _colors = [Color.Black, Color.Blue, Color.Red, Color.Green, Color.AliceBlue
 int _colorIndex = 0;
 TextField _textField;
 var shape;
+var collision;
 
 void main() {
 
@@ -16,8 +17,12 @@ void main() {
 
   // draw a red circle
   shape = new Shape();
+  collision = new Shape();
+  collision.graphics.circle(200, 200, 30);
+  collision.graphics.fillColor(Color.Green);
   shape.graphics.rect(100, 100, 10, 10);
   shape.graphics.fillColor(Color.Red);
+  stage.addChild(collision);
   stage.addChild(shape);
   stage.focus = stage;
 
@@ -38,9 +43,24 @@ void main() {
 
   _handleEvents(Stage stage) {
     stage.onKeyDown.listen((KeyboardEvent ke){
-       if (ke.keyCode == 37){
-         _textField.x += 10;
-       }
+      if(shape.hitTestObject(collision)){
+        shape.x = 10;
+        shape.y = 200;
+      }
+      switch (ke.keyCode) {
+      case 87:
+        shape.y -= 10;
+      break;
+      case 83:
+        shape.y += 10;
+      break;
+      case 65:
+        shape.x -= 10;
+      break;
+      case 68:
+        shape.x += 10;
+
+      }
     });
   }
 
