@@ -1,27 +1,39 @@
 import 'dart:html' as html;
 import 'package:stagexl/stagexl.dart';
+import 'dart:math';
 
 List _colors = [Color.Black, Color.Blue, Color.Red, Color.Green, Color.AliceBlue, Color.Azure, Color.DarkKhaki];
 int _colorIndex = 0;
 TextField _textField;
 var shape;
 var collision;
+Random r;
+int h;
+int w;
+bool gameisRunning = false;
+var stage;
+var renderLoop;
 
 void main() {
-
+  gameisRunning = true;
   // setup the Stage and RenderLoop
   var canvas = html.querySelector('#stage');
-  var stage = new Stage(canvas);
-  var renderLoop = new RenderLoop();
+  stage = new Stage(canvas);
+  renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
+  r = new Random();
 
   // draw a red circle
   shape = new Shape();
   collision = new Shape();
-  collision.graphics.circle(200, 200, 30);
+  collision.graphics.circle(-30, -30, 30);
   collision.graphics.fillColor(Color.Green);
-  shape.graphics.rect(100, 100, 10, 10);
+  shape.graphics.rect(-10, -10, 10, 10);
   shape.graphics.fillColor(Color.Red);
+  w = r.nextInt(1280);
+  h = r.nextInt(720);
+  shape.y = h;
+  shape.x = w;
   stage.addChild(collision);
   stage.addChild(shape);
   stage.focus = stage;
@@ -33,19 +45,34 @@ void main() {
   _textField.background = true;
   _textField.backgroundColor = Color.Yellow;
   _textField.text = new DateTime.now().toString();
-  stage.addChild(_textField);
+//  stage.addChild(_textField);
 
   stage.onEnterFrame.listen(_onEnterFrame);
   stage.onMouseClick.listen(_onMouseClick);
 
    _handleEvents(stage);
+   AIMovement();
 }
 
   _handleEvents(Stage stage) {
     stage.onKeyDown.listen((KeyboardEvent ke){
       if(shape.hitTestObject(collision)){
-        shape.x = 10;
-        shape.y = 200;
+        w = r.nextInt(1280);
+        h = r.nextInt(720);
+        shape.y = h;
+        shape.x = w;
+      }
+
+      if(collision.x < shape.x){
+        collision.x += 10;
+      } else {
+        collision.x -= 10;
+      }
+
+      if(collision.y < shape.y){
+        collision.y += 10;
+      } else {
+        collision.y -= 10;
       }
       switch (ke.keyCode) {
       case 87:
@@ -62,6 +89,9 @@ void main() {
 
       }
     });
+  }
+
+  AIMovement(){
   }
 
   _onEnterFrame(EnterFrameEvent e) {
