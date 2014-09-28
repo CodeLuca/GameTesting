@@ -1,12 +1,19 @@
-GameTesting
-===========
+DartRocket-Game
+===============
 
-Using this repository to test game making in a programming language called Dart!
+Creating a DartRocket Game!
 
-Plans
-----------
+Done:
+-----
++ Background
++ AI
++ Player
++ Movement
++ Shooting
 
-Add Better Movement
-Add Collision Detection
-Add Graphics
-Add Objective
+Todo:
+-----
+Good Enemies
+More than 2 States
+Objective
+Score
